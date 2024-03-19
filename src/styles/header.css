@@ -1,0 +1,23 @@
+.header {
+  display: flex;
+  align-items: center; /* 这确保所有项目在交叉轴上居中对齐 */
+  justify-content: space-between; /* 项目在主轴上均匀分布 */
+  padding: 10px;
+  background: #f0f0f0; /* 示例背景颜色 */
+}
+
+.header-item {
+  display: flex;
+  align-items: center; /* 对齐文本和图像 */
+}
+
+.system-name {
+  flex-grow: 1; /* 系统名称占据多余空间 */
+  text-align: center;
+  margin: 0; /* 重置h1默认的上下边距 */
+}
+
+.company-logo {
+  width: 50px; /* 根据实际图片调整 */
+  height: auto; /* 保持图片的比例 */
+}
