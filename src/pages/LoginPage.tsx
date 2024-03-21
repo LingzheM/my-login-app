@@ -2,18 +2,21 @@ import React from 'react';
 import '../styles/login.css';
 import Header from './Header';
 import axios from 'axios';
+import { NavigateFunction, useNavigate } from 'react-router-dom';
 
 interface State {
     loginId: string;
     password: string;
+    errorMessage: string;
 }
 
-class LoginPage extends React.Component<{}, State> {
-    constructor(props: {}) {
+class LoginPage extends React.Component<{navigate: NavigateFunction}, State> {
+    constructor(props: {navigate: NavigateFunction}) {
         super(props);
         this.state = {
             loginId: '',
             password: '',
+            errorMessage: ''
         };
     }
 
@@ -35,18 +38,18 @@ class LoginPage extends React.Component<{}, State> {
             alert('ユーザコードは[a-z]、[A-Z]、[0-9]、 "_" 、"-"のみで入力してください。');
             return false;
         }
-        if (loginId.length < 8 || loginId.length > 20) {
-            alert('ユーザコードは８〜20文字で入力してください');
-            return false;
-        }
+        // if (loginId.length < 8 || loginId.length > 20) {
+        //     alert('ユーザコードは８〜20文字で入力してください');
+        //     return false;
+        // }
         if (!passwordRegex.test(password)) {
             alert('パスワードは[a-z]、[A-Z]、[0-9]のみで入力してください。');
             return false;
         }
-        if (password.length < 8 || password.length > 15) {
-            alert('パスワードは８〜15文字で入力してください');
-            return false;
-        }
+        // if (password.length < 8 || password.length > 15) {
+        //     alert('パスワードは８〜15文字で入力してください');
+        //     return false;
+        // }
         return true;
     };
 
@@ -56,11 +59,24 @@ class LoginPage extends React.Component<{}, State> {
             return;
         }
         const { loginId, password } = this.state;
-        const loginEndpoint = 'http://localhost:8080/api/login';
+        const loginEndpoint = 'http://localhost:8080/api/userLogin';
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
+              },
+        };
         try {
-            const response = await axios.post(loginEndpoint, {loginId, password});
+            const response = await axios.post(loginEndpoint, {loginId, password}, config);
             console.log(response.data);
+            // 登录成功，清空错误信息
+            this.setState({errorMessage: '' });
+            // 登录成功，路由跳转到新页面
+            this.props.navigate('/work-urgency-screen');
         } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                const errorMessage: string = error.response.data as string;
+                this.setState({ errorMessage });
+            }
             console.error('Login failed: ', error);
         }
     };
@@ -77,7 +93,7 @@ class LoginPage extends React.Component<{}, State> {
 
 
     render() {
-        const { loginId, password} = this.state;
+        const { loginId, password, errorMessage } = this.state;
         return (
             <div>
                 <Header />
@@ -105,6 +121,7 @@ class LoginPage extends React.Component<{}, State> {
                             </label>
                             <button type='submit'>ログイン</button>
                         </form>
+                        {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
                     </div>
                     <div className='features'>
                         <h3>応用機能</h3>
@@ -128,4 +145,9 @@ class LoginPage extends React.Component<{}, State> {
     }
 }
 
-export default LoginPage;
+function LoginPageWithNavigate(props:{}) {
+    const navigate = useNavigate();
+    return <LoginPage {...props} navigate={navigate} />
+}
+
+export default LoginPageWithNavigate;
