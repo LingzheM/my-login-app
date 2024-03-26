@@ -1,0 +1,41 @@
+.features-container {
+    display: flex;
+    flex-direction: row; /* 保持排列方向为水平 */
+    white-space: nowrap; /* 禁止换行 */
+    width: 100%; /* 容器宽度为100% */
+}
+
+.feature-button-container {
+    flex-grow: 1; /* 允许按钮根据需要伸展 */
+    margin-right: 10px; /* 按钮之间的间隙 */
+}
+
+.feature-button {
+    width: 100%; /* 按钮宽度充满容器 */
+    padding: 10px;
+    border: 1px solid #ccc; /* 示例边框，根据需要调整 */
+    cursor: pointer;
+    white-space: nowrap; /* 确保按钮文本不换行 */
+}
+
+.color-bar {
+    width: 100%; /* 颜色条宽度与按钮宽度一致 */
+    height: 5px; /* 调整颜色条的高度 */
+    margin-bottom: 5px; /* 颜色条与按钮之间的间隔 */
+}
+
+.blue {
+    background-color: blue;
+}
+
+.green {
+    background-color: green;
+}
+
+.red {
+    background-color: red;
+}
+
+.orange {
+    background-color: orange;
+}

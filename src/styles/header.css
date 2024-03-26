@@ -1,14 +1,15 @@
 .header {
   display: flex;
-  align-items: center; /* 这确保所有项目在交叉轴上居中对齐 */
-  justify-content: space-between; /* 项目在主轴上均匀分布 */
+  flex-direction: column; /* 改变主轴方向为垂直 */
   padding: 10px;
-  background: #f0f0f0; /* 示例背景颜色 */
+  background: #f0f0f0;
 }
 
-.header-item {
+.header-top-row {
   display: flex;
+  justify-content: space-between; /* 项目在主轴上均匀分布 */
   align-items: center; /* 对齐文本和图像 */
+  width: 100%; /* 占据整个容器宽度 */
 }
 
 .system-name {
@@ -20,4 +21,12 @@
 .company-logo {
   width: 50px; /* 根据实际图片调整 */
   height: auto; /* 保持图片的比例 */
+}
+
+.user-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%; /* 占据整个容器宽度 */
+  margin-top: 10px; /* 可能需要一些上边距 */
 }

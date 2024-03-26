@@ -50,14 +50,6 @@
     transition: background-color 0.3s, transform 0.3s;
   }
   
-  .login-container button:hover {
-    background-color: #0d47a1;
-  }
-  
-  .login-container button:active {
-    transform: translateY(2px);
-  }
-  
   .features {
     flex: 1; /* 允许特性区域填充可用空间 */
     min-width: 300px; /* 设置最小宽度 */

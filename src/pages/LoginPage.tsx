@@ -3,6 +3,12 @@ import '../styles/login.css';
 import Header from './Header';
 import axios from 'axios';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
+import { useUser } from '../utils/UserContext';
+
+interface LoginPageProps {
+    navigate: NavigateFunction;
+    onLoginSuccess: (userInfo: any) => void;
+}
 
 interface State {
     loginId: string;
@@ -10,8 +16,9 @@ interface State {
     errorMessage: string;
 }
 
-class LoginPage extends React.Component<{navigate: NavigateFunction}, State> {
-    constructor(props: {navigate: NavigateFunction}) {
+
+class LoginPage extends React.Component<LoginPageProps, State> {
+    constructor(props: LoginPageProps) {
         super(props);
         this.state = {
             loginId: '',
@@ -67,11 +74,9 @@ class LoginPage extends React.Component<{navigate: NavigateFunction}, State> {
         };
         try {
             const response = await axios.post(loginEndpoint, {loginId, password}, config);
-            console.log(response.data);
-            // 登录成功，清空错误信息
-            this.setState({errorMessage: '' });
-            // 登录成功，路由跳转到新页面
-            this.props.navigate('/work-urgency-screen');
+            const userInfo = response.data;
+            // 调用onLoginSuccess回调
+            this.props.onLoginSuccess(userInfo);
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
                 const errorMessage: string = error.response.data as string;
@@ -96,7 +101,8 @@ class LoginPage extends React.Component<{navigate: NavigateFunction}, State> {
         const { loginId, password, errorMessage } = this.state;
         return (
             <div>
-                <Header />
+                <Header 
+                />
                 <div className='container'>
                     <div className='login-container'>
                         <h1>利用者登録</h1>
@@ -147,7 +153,20 @@ class LoginPage extends React.Component<{navigate: NavigateFunction}, State> {
 
 function LoginPageWithNavigate(props:{}) {
     const navigate = useNavigate();
-    return <LoginPage {...props} navigate={navigate} />
+    // 从Context中获取setUserAuth
+    const {setUserAuth} = useUser();
+    // 封装登录成功后的信息保存的逻辑
+    const handleLoginSuccess = (userInfo: any) => {
+        setUserAuth({
+            userId: userInfo.userId,
+            userCode: userInfo.userCode,
+            userName: userInfo.userName,
+            userRole: userInfo.userRole,
+            loginTime: userInfo.loginTime
+        });
+        navigate('/userPage');
+    }
+    return <LoginPage {...props} navigate={navigate} onLoginSuccess={handleLoginSuccess} />
 }
 
 export default LoginPageWithNavigate;

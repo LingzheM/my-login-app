@@ -1,0 +1,21 @@
+.user-info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 10px; /* 距离顶部行的间隔 */
+  }
+  
+  /* 新添加的CSS */
+  .user-info-left {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* 左对齐 */
+  }
+  
+  .user-info-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* 右对齐 */
+    gap: 20px; /* 间隔 */
+  }
