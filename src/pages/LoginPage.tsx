@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/login.css';
 import Header from './Header';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { useUser } from '../utils/UserContext';
 
@@ -77,10 +77,13 @@ class LoginPage extends React.Component<LoginPageProps, State> {
             const userInfo = response.data;
             // 调用onLoginSuccess回调
             this.props.onLoginSuccess(userInfo);
-        } catch (error) {
-            if (axios.isAxiosError(error) && error.response) {
-                const errorMessage: string = error.response.data as string;
+        } catch (error: unknown) {
+            const axiosError = error as AxiosError;
+            if (axiosError.response) {
+                const errorMessage: string = axiosError.response.data as string;
                 this.setState({ errorMessage });
+            } else {
+                this.props.navigate('/error', {state: {message: 'The server is not responding.'}});
             }
             console.error('Login failed: ', error);
         }
@@ -164,6 +167,7 @@ function LoginPageWithNavigate(props:{}) {
             userRole: userInfo.userRole,
             loginTime: userInfo.loginTime
         });
+        localStorage.setItem('userAuth', JSON.stringify(userInfo))
         navigate('/userPage');
     }
     return <LoginPage {...props} navigate={navigate} onLoginSuccess={handleLoginSuccess} />

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode} from "react";
 
-interface UserAuth {
+export interface UserAuth {
     userId?: number;
     userCode?: string;
     userName?: string;

@@ -1,17 +1,18 @@
 import React from 'react';
 import UserInfo from './UserInfo'
 import '../styles/header.css'
+import { useNavigate } from 'react-router-dom';
+
 
 type HeaderProps = {
     loginTime?: string;
     userName?: string;
     userRole?: string;
+    onLogout: () => void;
 }
 
 class Header extends React.Component<HeaderProps> {
-    handleLogout = () => {
 
-    }
     render() {
         const {loginTime, userName, userRole} = this.props;
         return (
@@ -30,7 +31,7 @@ class Header extends React.Component<HeaderProps> {
                         loginTime={loginTime}
                         userName={userName}
                         userRole={userRole} 
-                        onLogout={this.handleLogout}
+                        onLogout={this.props.onLogout}
                     />
                     </div>
                 )}
@@ -41,4 +42,13 @@ class Header extends React.Component<HeaderProps> {
     }
 }
 
-export default Header;
+function HeaderWithNavigation(props:Omit<HeaderProps, 'onLogout'>) {
+    const navigate = useNavigate();
+    const onLogout = () => {
+        localStorage.removeItem('userAuth');
+        navigate('/', {replace: true})
+    }
+    return <Header {...props} onLogout={onLogout} />
+}
+
+export default HeaderWithNavigation;
