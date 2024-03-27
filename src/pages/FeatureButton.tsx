@@ -7,10 +7,6 @@ interface FeatureButtonProps {
     className: string;
 }
 
-interface FeatureButtonState {
-
-}
-
 class FeatureButton extends React.Component<FeatureButtonProps, FeatureButtonState> {
     hasAccess(): boolean {
         return this.props.permissionRequired.includes(this.props.userRole);
@@ -23,7 +19,6 @@ class FeatureButton extends React.Component<FeatureButtonProps, FeatureButtonSta
         const { title, className } = this.props;
         const buttonClass = `feature-button`;
         const colorBarClass = `color-bar ${className}`;
-
         return (
             <div className="feature-button-container">
                 <div className={colorBarClass}></div>
